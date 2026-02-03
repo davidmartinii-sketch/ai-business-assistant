@@ -67,6 +67,34 @@ cp .env.example .env
 
 GitHub Actions runs lint and tests on push and PRs.
 
+## Docker
+
+### Local Development with Docker Compose
+
+```bash
+# Start the app with Docker Compose
+docker compose up
+
+# The API will be available at http://localhost:3000
+# Changes to src/ are reflected live (volume mounted)
+```
+
+### Production Docker Build
+
+```bash
+# Build the image
+docker build -t ai-business-assistant:latest .
+
+# Run the container
+docker run -p 3000:3000 -e PORT=3000 ai-business-assistant:latest
+```
+
+The Dockerfile uses a multi-stage build for optimal image size and security:
+- Alpine Linux (lightweight base)
+- Non-root user execution
+- Health checks enabled
+- Production-optimized
+
 ## License
 
 MIT
