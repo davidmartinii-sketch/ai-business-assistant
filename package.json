@@ -1,0 +1,20 @@
+{
+  "name": "ai-business-assistant",
+  "version": "0.1.0",
+  "description": "AI Business Assistant API",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "jest --runInBand"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}
