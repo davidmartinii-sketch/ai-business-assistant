@@ -1,10 +1,14 @@
 const express = require('express');
 const cors = require('cors');
+const securityMiddleware = require('./middleware/security');
 const healthRoutes = require('./routes/health');
 const routes = require('./routes');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
+
+// Security middleware
+app.use(...securityMiddleware);
 
 // Middleware
 app.use(cors());
