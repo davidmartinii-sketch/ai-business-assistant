@@ -3,6 +3,12 @@ const app = require('../src/app');
 const userController = require('../src/controllers/userController');
 const authController = require('../src/controllers/authController');
 
+// Clean up database before each test
+beforeEach(async () => {
+  await userController.resetUsers();
+  await authController.resetUsers();
+});
+
 describe('GET /', () => {
   test('responds with 200 and the expected JSON message', async () => {
     const res = await request(app).get('/');
@@ -29,10 +35,6 @@ describe('GET /notfound', () => {
 });
 
 describe('POST /users', () => {
-  beforeEach(() => {
-    userController.resetUsers();
-  });
-
   test('creates a user with valid data', async () => {
     const res = await request(app).post('/users').send({
       name: 'John Doe',
@@ -86,10 +88,6 @@ describe('POST /users', () => {
 });
 
 describe('GET /users', () => {
-  beforeEach(() => {
-    userController.resetUsers();
-  });
-
   test('returns empty array initially', async () => {
     const res = await request(app).get('/users');
     expect(res.statusCode).toBe(200);
@@ -112,10 +110,6 @@ describe('GET /users', () => {
 });
 
 describe('POST /auth/register', () => {
-  beforeEach(() => {
-    authController.resetUsers();
-  });
-
   test('registers a new user with valid data', async () => {
     const res = await request(app).post('/auth/register').send({
       name: 'John Doe',
@@ -179,10 +173,6 @@ describe('POST /auth/register', () => {
 });
 
 describe('POST /auth/login', () => {
-  beforeEach(() => {
-    authController.resetUsers();
-  });
-
   test('logs in user with correct credentials', async () => {
     // Register user first
     await request(app).post('/auth/register').send({
@@ -246,8 +236,6 @@ describe('GET /auth/me', () => {
   let token;
 
   beforeEach(async () => {
-    authController.resetUsers();
-
     // Register and get token
     const registerRes = await request(app).post('/auth/register').send({
       name: 'John Doe',

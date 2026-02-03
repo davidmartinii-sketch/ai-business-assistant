@@ -9,6 +9,9 @@ const env = cleanEnv(process.env, {
     choices: ['development', 'production', 'test'],
     default: 'development',
   }),
+  DATABASE_URL: str({
+    desc: 'PostgreSQL database connection string',
+  }),
 });
 
 module.exports = {
@@ -17,4 +20,5 @@ module.exports = {
   isDev: env.NODE_ENV === 'development',
   isProd: env.NODE_ENV === 'production',
   isTest: env.NODE_ENV === 'test',
+  databaseUrl: env.DATABASE_URL,
 };

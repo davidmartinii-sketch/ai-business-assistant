@@ -1,34 +1,79 @@
-// Mock in-memory store (replace with database in production)
-let users = [];
-let userId = 1;
+const prisma = require('../config/database');
+const bcrypt = require('bcryptjs');
 
-exports.createUser = (req, res) => {
-  const { name, email, age } = req.body;
+exports.createUser = async (req, res) => {
+  try {
+    const { name, email, age } = req.body;
 
-  const user = {
-    id: userId++,
-    name,
-    email,
-    age: age || null,
-    createdAt: new Date().toISOString(),
-  };
+    // Check if user exists
+    const existingUser = await prisma.user.findUnique({
+      where: { email },
+    });
 
-  users.push(user);
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        error: { statusCode: 400, message: 'Email already exists' },
+      });
+    }
 
-  res.status(201).json({
-    success: true,
-    data: user,
-  });
+    // Generate a default password hash for non-auth users
+    const salt = await bcrypt.genSalt(10);
+    const passwordHash = await bcrypt.hash('default-password', salt);
+
+    const user = await prisma.user.create({
+      data: {
+        name,
+        email,
+        age: age || null,
+        passwordHash,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        age: true,
+        createdAt: true,
+      },
+    });
+
+    res.status(201).json({
+      success: true,
+      data: user,
+    });
+  } catch {
+    res.status(500).json({
+      success: false,
+      error: { statusCode: 500, message: 'Failed to create user' },
+    });
+  }
 };
 
-exports.getUsers = (req, res) => {
-  res.json({
-    success: true,
-    data: users,
-  });
+exports.getUsers = async (req, res) => {
+  try {
+    const users = await prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        age: true,
+        createdAt: true,
+      },
+    });
+
+    res.json({
+      success: true,
+      data: users,
+    });
+  } catch {
+    res.status(500).json({
+      success: false,
+      error: { statusCode: 500, message: 'Failed to get users' },
+    });
+  }
 };
 
-exports.resetUsers = () => {
-  users = [];
-  userId = 1;
+// Test helper to clean database
+exports.resetUsers = async () => {
+  await prisma.user.deleteMany();
 };
