@@ -2,8 +2,7 @@
 
 A minimal, production-ready Express.js API scaffold with linting, formatting, testing, and CI.
 
-<!-- Replace with your repo URL when available -->
-![CI](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/davidmartinii-sketch/ai-business-assistant/actions/workflows/ci.yml/badge.svg)
 
 ## Requirements
 
