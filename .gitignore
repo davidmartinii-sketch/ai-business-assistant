@@ -6,3 +6,9 @@ coverage
 npm-debug.log
 
 /src/generated/prisma
+
+# SQLite database files
+*.db
+*.db-journal
+prisma/*.db
+prisma/*.db-journal
