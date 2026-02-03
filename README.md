@@ -1,6 +1,6 @@
 # AI Business Assistant API
 
-A production-ready Express.js API with PostgreSQL, Prisma ORM, JWT authentication, linting, testing, and CI/CD.
+A production-ready Express.js API with SQLite database, Prisma ORM, JWT authentication, linting, testing, and CI/CD.
 
 ![CI](https://github.com/davidmartinii-sketch/ai-business-assistant/actions/workflows/ci.yml/badge.svg)
 
@@ -8,7 +8,7 @@ A production-ready Express.js API with PostgreSQL, Prisma ORM, JWT authenticatio
 
 - Node.js 24.13.0 (see `.nvmrc`)
 - npm 11+
-- PostgreSQL 16+ (or use Prisma's local dev database)
+- SQLite (bundled with Prisma)
 
 ## Quick Start
 
@@ -22,13 +22,10 @@ npm ci
 # Copy environment variables
 cp .env.example .env
 
-# Start local Prisma Postgres database (recommended for development)
-npx prisma dev
-
 # Generate Prisma Client
 npm run db:generate
 
-# Push schema to database
+# Push schema to database (creates dev.db file)
 npm run db:push
 
 # Start development server
@@ -37,34 +34,36 @@ npm run dev
 
 ## Database Setup
 
-### Option 1: Prisma Dev Database (Recommended for Development)
+### SQLite (Default)
+
+The project uses SQLite by default for simple local development:
 
 ```bash
-# Start local Prisma Postgres (runs on ports 51213-51215)
-npx prisma dev
+# Generate Prisma Client
+npm run db:generate
 
-# Push schema to database
+# Push schema to database (creates dev.db file)
 npm run db:push
 ```
 
-### Option 2: Docker Compose PostgreSQL
+The database file `dev.db` is created in the project root. To use a different database:
+
+1. Update `DATABASE_URL` in `.env`
+2. Run `npm run db:push` to sync the schema
+
+### PostgreSQL (Optional)
+
+To use PostgreSQL instead:
 
 ```bash
-# Start PostgreSQL with Docker Compose
-docker compose up -d postgres
-
-# Update .env with Docker database URL
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/ai_business_assistant?schema=public"
-
-# Push schema to database
-npm run db:push
-```
-
-### Option 3: Your Own PostgreSQL
-
-```bash
-# Update .env with your database URL
+# Update .env with PostgreSQL URL
 DATABASE_URL="postgresql://user:password@host:5432/database?schema=public"
+
+# Update prisma/schema.prisma provider
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
 
 # Push schema to database
 npm run db:push

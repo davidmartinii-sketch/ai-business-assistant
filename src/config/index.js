@@ -10,7 +10,8 @@ const env = cleanEnv(process.env, {
     default: 'development',
   }),
   DATABASE_URL: str({
-    desc: 'PostgreSQL database connection string',
+    desc: 'Database connection string',
+    default: 'file:./dev.db',
   }),
 });
 

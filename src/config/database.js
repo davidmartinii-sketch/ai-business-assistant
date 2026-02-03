@@ -1,25 +1,26 @@
+// Load environment variables first
+require('dotenv').config();
+
 const { PrismaClient } = require('@prisma/client');
 const logger = require('./logger');
 
 // Prisma Client singleton pattern
-// Prevents multiple instances in development with hot-reload
+// In Prisma 6, SQLite works directly without adapters
 let prisma;
 
 if (process.env.NODE_ENV === 'production') {
   prisma = new PrismaClient({
     log: ['error', 'warn'],
-    accelerateUrl: process.env.DATABASE_URL,
   });
 } else {
-  // In development, use a global variable to preserve the client across hot-reloads
-  if (!global.prisma) {
-    global.prisma = new PrismaClient({
-      log: ['query', 'error', 'warn'],
-      accelerateUrl: process.env.DATABASE_URL,
-    });
-  }
-  prisma = global.prisma;
+  // In development/test, use appropriate logging
+  prisma = new PrismaClient({
+    log:
+      process.env.NODE_ENV === 'test' ? ['error'] : ['query', 'error', 'warn'],
+  });
 }
+
+logger.info(`Prisma Client initialized for SQLite`);
 
 // Graceful shutdown
 process.on('SIGINT', async () => {
