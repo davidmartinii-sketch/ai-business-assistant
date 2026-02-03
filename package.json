@@ -23,6 +23,7 @@
     "testEnvironment": "node"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "envalid": "^8.1.1",
@@ -30,6 +31,7 @@
     "express-rate-limit": "^8.2.1",
     "helmet": "^8.1.0",
     "joi": "^18.0.2",
+    "jsonwebtoken": "^9.0.3",
     "pino": "^10.3.0",
     "pino-http": "^11.0.0",
     "swagger-jsdoc": "^6.2.8",

@@ -23,9 +23,11 @@ const express = require('express');
 
 const router = express.Router();
 const helloController = require('../controllers/helloController');
+const authRoutes = require('./auth');
 const usersRoutes = require('./users');
 
 router.get('/', helloController.getHello);
+router.use('/auth', authRoutes);
 router.use('/users', usersRoutes);
 
 module.exports = router;
