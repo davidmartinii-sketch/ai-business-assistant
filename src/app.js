@@ -2,12 +2,16 @@ const express = require('express');
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpecs = require('./config/swagger');
+const httpLogger = require('./middleware/logger');
 const securityMiddleware = require('./middleware/security');
 const healthRoutes = require('./routes/health');
 const routes = require('./routes');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
+
+// HTTP request logging (early in middleware chain)
+app.use(httpLogger);
 
 // Security middleware
 app.use(...securityMiddleware);
