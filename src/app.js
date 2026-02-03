@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpecs = require('./config/swagger');
 const securityMiddleware = require('./middleware/security');
 const healthRoutes = require('./routes/health');
 const routes = require('./routes');
@@ -13,6 +15,9 @@ app.use(...securityMiddleware);
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Swagger API documentation
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 // Routes
 app.use('/health', healthRoutes);

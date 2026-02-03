@@ -19,6 +19,16 @@ nvm use
 npm ci
 ```
 
+## API Documentation
+
+Interactive API documentation is available at:
+
+```
+http://localhost:3000/api/docs
+```
+
+Powered by Swagger UI and OpenAPI 3.0. Try out endpoints directly from the browser!
+
 ## Run
 
 ```bash
