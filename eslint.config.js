@@ -5,6 +5,9 @@ const jestPlugin = require('eslint-plugin-jest');
 const prettierConfig = require('eslint-config-prettier');
 
 module.exports = [
+  {
+    ignores: ['node_modules/**', 'coverage/**'],
+  },
   js.configs.recommended,
   {
     files: ['**/*.js'],
@@ -44,6 +47,12 @@ module.exports = [
       'no-console': 'warn',
       'node/no-unpublished-require': 'off',
       'node/no-missing-require': 'off'
+    }
+  },
+  {
+    files: ['src/server.js'],
+    rules: {
+      'no-console': 'off'
     }
   },
   prettierConfig
