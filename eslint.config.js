@@ -44,13 +44,23 @@ module.exports = [
       jest: jestPlugin
     },
     rules: {
-      'no-console': 'warn',
+      'no-console': 'error',
+      'no-var': 'error',
+      'prefer-const': 'error',
+      'eqeqeq': ['error', 'always'],
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       'node/no-unpublished-require': 'off',
       'node/no-missing-require': 'off'
     }
   },
   {
     files: ['src/server.js'],
+    rules: {
+      'no-console': 'off'
+    }
+  },
+  {
+    files: ['tests/**/*.js'],
     rules: {
       'no-console': 'off'
     }
